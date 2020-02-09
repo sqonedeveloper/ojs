@@ -23,11 +23,11 @@ class AdminController extends BaseController {
 
       $footerJs = $this->footerJs($content);
       $footerJs['navigation'] = $this->_navigation();
-      /* $footerJs['users'] = [
-         'nama' => $this->nama,
-         'avatar' => $this->avatar,
-         'email' => $this->email
-      ]; */
+      $footerJs['users'] = [
+         'nama' => 'Administrator',
+         'avatar' => 'avatar',
+         'email' => 'sqone.developer@ar-raniry.ac.id'
+      ];
 
       $data['title'] = $content['title'];
       $data['internalCss'] = css_tag($internalCss);

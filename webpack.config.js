@@ -3,7 +3,10 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
-let entry_admin = {}
+let entry_admin = {
+	header: './src/default/Header.js',
+	sidebar: './src/default/Sidebar.js',
+}
 
 let set_entry = {
 	admin: entry_admin

@@ -1,0 +1,69 @@
+import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
+import { LazyLoadImage } from 'react-lazy-load-image-component'
+// import { checkImageUrl } from './Helpers'
+
+const { users } = content
+
+class Header extends Component {
+   constructor() {
+      super()
+
+      this.state = {
+         avatar: ''
+      }
+   }
+
+   componentDidMount() {
+      // this.setState({ avatar: checkImageUrl(users.avatar) })
+   }
+
+   render() {
+      const { avatar } = this.state
+
+      return (
+         <nav className="navbar top-navbar navbar-expand-md navbar-light">
+            <div className="navbar-header">
+               <a className="navbar-brand" href={siteURL}>
+                  <span>
+                     <LazyLoadImage effect="blur" src="https://uin.ar-raniry.ac.id/assets/img/7b186572c6e368277455f8954d2ffe2d1.png" className="dark-logo" style={{ height: 30 }} />
+                     <LazyLoadImage effect="blur" src="https://uin.ar-raniry.ac.id/assets/img/7b186572c6e368277455f8954d2ffe2d1.png" className="light-logo" style={{ height: 30 }} />
+                  </span>
+               </a>
+            </div>
+            <div className="navbar-collapse">
+               <ul className="navbar-nav mr-auto mt-md-0">
+                  <li className="nav-item"> <a className="nav-link nav-toggler hidden-md-up text-muted waves-effect waves-dark" href="#"><i className="mdi mdi-menu" /></a> </li>
+               </ul>
+               <ul className="navbar-nav my-lg-0">
+                  <li className="nav-item dropdown">
+                     <a className="nav-link dropdown-toggle text-muted waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <LazyLoadImage src={avatar} effect="blur" className="profile-pic" />
+                     </a>
+                     <div className="dropdown-menu dropdown-menu-right scale-up">
+                        <ul className="dropdown-user">
+                           <li>
+                              <div className="dw-user-box">
+                                 <div className="u-img">
+                                    <LazyLoadImage src={avatar} effect="blur" />
+                                 </div>
+                                 <div className="u-text">
+                                    <h4>{users.nama}</h4>
+                                    <p className="text-muted">{users.email}</p>
+                                 </div>
+                              </div>
+                           </li>
+                           <li role="separator" className="divider"></li>
+                           <li><a href={siteURL + '/login/logout'}><i className="fa fa-power-off" /> Profile</a></li>
+                           <li><a href={siteURL + '/login/logout'}><i className="fa fa-power-off" /> Logout</a></li>
+                        </ul>
+                     </div>
+                  </li>
+               </ul>
+            </div>
+         </nav>
+      )
+   }
+}
+
+ReactDOM.render(<Header />, document.getElementById('topbar'))

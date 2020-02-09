@@ -7,7 +7,6 @@
    <link rel="icon" type="image/png" sizes="16x16" href="http://uin.ar-raniry.ac.id/assets/img/favicon.png">
    <title><?php echo $title;?></title>
    <?php
-   echo csrf_meta();
    echo css_tag([
       'css/bootstrap.min.css',
       'css/style.min.css'
@@ -15,6 +14,7 @@
    echo $internalCss;
    echo '<style type="text/css">';
    $minify = new \App\Libraries\Minify();
+   echo $minify->css('public/css/blue.min.css');
    echo $minify->css('public/css/custom.css');
    echo '</style>';
    ?>
