@@ -51,34 +51,6 @@ class Database extends \CodeIgniter\Database\Config
 		'port'     => 3306,
 	];
 
-	/**
-	 * This database connection is used when
-	 * running PHPUnit database tests.
-	 *
-	 * @var array
-	 */
-	public $tests = [
-		'DSN'      => '',
-		'hostname' => '127.0.0.1',
-		'username' => '',
-		'password' => '',
-		'database' => '',
-		'DBDriver' => '',
-		'DBPrefix' => 'db_',  // Needed to ensure we're working correctly with prefixes live. DO NOT REMOVE.
-		'pConnect' => false,
-		'DBDebug'  => (ENVIRONMENT !== 'production'),
-		'cacheOn'  => false,
-		'cacheDir' => '',
-		'charset'  => 'utf8',
-		'DBCollat' => 'utf8_general_ci',
-		'swapPre'  => '',
-		'encrypt'  => false,
-		'compress' => false,
-		'strictOn' => false,
-		'failover' => [],
-		'port'     => 3306,
-	];
-
 	//--------------------------------------------------------------------
 
 	public function __construct()
