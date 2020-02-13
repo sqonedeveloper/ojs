@@ -266,4 +266,15 @@ class App extends BaseConfig
 	*/
 	public $CSPEnabled = false;
 
+	public $datatable = [
+		'css' => [
+			'plugins/datatable/dataTables.bootstrap4.min.css',
+			'plugins/datatable/responsive.dataTables.min.css'
+		],
+		'js' => [
+			'plugins/datatable/jquery.dataTables.min.js',
+			'plugins/datatable/dataTables.responsive.min.js'
+		]
+	];
+
 }

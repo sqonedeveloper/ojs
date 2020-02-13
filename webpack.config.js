@@ -6,6 +6,11 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 let entry_admin = {
 	header: './src/default/Header.js',
 	sidebar: './src/default/Sidebar.js',
+	dashboard: './src/Admin/Dashboard.js',
+	journals: './src/Admin/Journals/Lists.js',
+	journalsForms: './src/Admin/Journals/Forms.js',
+	usersAccount: './src/Admin/Users/Account/Lists.js',
+	usersAccountForms: './src/Admin/Users/Account/Forms.js',
 }
 
 let set_entry = {

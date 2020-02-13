@@ -4,12 +4,16 @@ use CodeIgniter\Controller;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Psr\Log\LoggerInterface;
+use PhpCountriesArray\CountriesArray;
+
+include APPPATH . 'ThirdParty/CountriesArray.php';
 
 class BaseController extends Controller {
 	
 	protected $helpers = [
 		'autoload',
-		'style'
+		'style',
+		'filesystem'
 	];
 
 	public $app;
@@ -18,6 +22,17 @@ class BaseController extends Controller {
 		parent::initController($request, $response, $logger);
 
 		$this->app = new \Config\App();
+	}
+
+	public function dropdownCountry() {
+		$response = [];
+      foreach (CountriesArray::get() as $key => $val) {
+         array_push($response, [
+            'value' => $key,
+            'label' => $val
+         ]);
+      }
+      return $response;
 	}
 
 	public function internalCss($content = []) {

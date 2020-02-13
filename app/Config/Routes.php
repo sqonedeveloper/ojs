@@ -76,6 +76,21 @@ $routes->get('/', 'Home::index');
 
 $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], function($routes) {
 	$routes->get('dashboard', 'Dashboard::index');
+
+	$routes->get('journals', 'Journals::index');
+	$routes->group('journals', function($routes) {
+		$routes->post('submit', 'Journals::submit');
+	});
+
+	$routes->group('users', ['namespace' => 'App\Controllers\Admin\Users'], function($routes) {
+		$routes->get('account', 'Account::index');
+		$routes->group('account', function($routes) {
+			$routes->get('addNew', 'Account::addNew');
+			$routes->get('edit/(:num)', 'Account::edit/$1');
+			$routes->post('submit', 'Account::submit');
+			$routes->post('getData', 'Account::getData');
+		});
+	});
 });
 
 /**
