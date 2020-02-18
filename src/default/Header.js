@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import { LazyLoadImage } from 'react-lazy-load-image-component'
-// import { checkImageUrl } from './Helpers'
+import { checkImageUrl } from '../Helpers'
 
 const { users } = content
 
@@ -15,7 +15,7 @@ class Header extends Component {
    }
 
    componentDidMount() {
-      // this.setState({ avatar: checkImageUrl(users.avatar) })
+      this.setState({ avatar: checkImageUrl(users.avatar) })
    }
 
    render() {
@@ -54,7 +54,7 @@ class Header extends Component {
                               </div>
                            </li>
                            <li role="separator" className="divider"></li>
-                           <li><a href={siteURL + '/login/logout'}><i className="fa fa-power-off" /> Profile</a></li>
+                           <li><a href={siteURL + '/admin/users/profile'}><i className="fa fa-user" /> Profile</a></li>
                            <li><a href={siteURL + '/login/logout'}><i className="fa fa-power-off" /> Logout</a></li>
                         </ul>
                      </div>

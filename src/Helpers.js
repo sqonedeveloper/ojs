@@ -6,7 +6,7 @@ export var checkImageUrl = (url) => {
    if (http.status === 200 && http.responseText !== 'no direct script access allowed') {
       return url
    } else {
-      return baseURL + 'admin/img/warning.png'
+      return baseURL + 'img/avatar.png'
    }
 }
 

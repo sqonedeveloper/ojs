@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 let entry_admin = {
+	login: './src/Login.js',
 	header: './src/default/Header.js',
 	sidebar: './src/default/Sidebar.js',
 	dashboard: './src/Admin/Dashboard.js',
@@ -11,6 +12,7 @@ let entry_admin = {
 	journalsForms: './src/Admin/Journals/Forms.js',
 	usersAccount: './src/Admin/Users/Account/Lists.js',
 	usersAccountForms: './src/Admin/Users/Account/Forms.js',
+	usersAccountProfile: './src/Admin/Users/Account/Profile.js',
 }
 
 let set_entry = {

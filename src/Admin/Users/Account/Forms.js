@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import { Container, Row, Col, Breadcrumb, Form, Button } from 'react-bootstrap'
 import axios from 'axios'
 import MsgResponse from '../../../MsgResponse'
+import EditForms from './EditForms'
 
 axios.defaults.baseURL = siteURL
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
@@ -12,17 +13,27 @@ const { listCountry } = content
 class Forms extends Component {
    constructor() {
       super()
-   
+
       this.state = {
          errors: {}
       }
-   
+
       this._onChange = this._onChange.bind(this)
    }
-   
+
+   componentDidMount() {
+      if (pageType === 'update') {
+         this.setState({ ...content.detail })
+      }
+   }
+
    _onChange(e) {
       const { name, value } = e.target
       this.setState({ [name]: value })
+   }
+
+   _updateState(e) {
+      this.setState({ [e.name]: e.value })
    }
 
    _submit() {
@@ -31,7 +42,8 @@ class Forms extends Component {
       formData.append('pageType', pageType)
       formData.append('id', segment[5])
 
-      var fields = ['first_name', 'last_name', 'username', 'email', 'password', 'country'];
+      var fields = ['first_name', 'last_name', 'public_name', 'username', 'email', 'password', 'country',
+         'website', 'phone', 'orcid_id', 'affiliation', 'bio_statement', 'mailing_address'];
       for (var i = 0; i < fields.length; i++) {
          var fieldState = this.state[fields[i]]
 
@@ -41,7 +53,7 @@ class Forms extends Component {
             formData.append(fields[i], fieldState)
          }
       }
-      
+
       axios.
          post('/admin/users/account/submit', formData).
          then(res => {
@@ -92,32 +104,36 @@ class Forms extends Component {
                   <MsgResponse {...this.state} />
                   <div className="card">
                      <div className="card-body">
-                        <Form.Group as={Row} className={errors.first_name ? 'has-danger' : ''}>
+                        <Form.Group as={Row}>
                            <Form.Label column sm={3}>First Name</Form.Label>
                            <Col sm={9}>
-                              <Form.Control name="first_name" value={first_name} onChange={this._onChange} size="sm" />
-                              <Form.Control.Feedback type="invalid">{errors.first_name}</Form.Control.Feedback>
+                              <Row>
+                                 <Col sm={5} className={errors.first_name ? 'has-danger' : ''}>
+                                    <Form.Control name="first_name" value={first_name} onChange={this._onChange} size="sm" />
+                                    <Form.Control.Feedback type="invalid">{errors.first_name}</Form.Control.Feedback>
+                                 </Col>
+                                 <Form.Label column sm={2}>Last Name</Form.Label>
+                                 <Col sm={5} className={errors.last_name ? 'has-danger' : ''}>
+                                    <Form.Control name="last_name" value={last_name} onChange={this._onChange} size="sm" />
+                                    <Form.Control.Feedback type="invalid">{errors.last_name}</Form.Control.Feedback>
+                                 </Col>
+                              </Row>
                            </Col>
                         </Form.Group>
-                        <Form.Group as={Row} className={errors.last_name ? 'has-danger' : ''}>
-                           <Form.Label column sm={3}>Last Name</Form.Label>
-                           <Col sm={9}>
-                              <Form.Control name="last_name" value={last_name} onChange={this._onChange} size="sm" />
-                              <Form.Control.Feedback type="invalid">{errors.last_name}</Form.Control.Feedback>
-                           </Col>
-                        </Form.Group>
-                        <Form.Group as={Row} className={errors.username ? 'has-danger' : ''}>
+                        <Form.Group as={Row}>
                            <Form.Label column sm={3}>Username</Form.Label>
                            <Col sm={9}>
-                              <Form.Control name="username" value={username} onChange={this._onChange} size="sm" />
-                              <Form.Control.Feedback type="invalid">{errors.username}</Form.Control.Feedback>
-                           </Col>
-                        </Form.Group>
-                        <Form.Group as={Row} className={errors.email ? 'has-danger' : ''}>
-                           <Form.Label column sm={3}>Email</Form.Label>
-                           <Col sm={9}>
-                              <Form.Control name="email" value={email} onChange={this._onChange} size="sm" />
-                              <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
+                              <Row>
+                                 <Col sm={5} className={errors.username ? 'has-danger' : ''}>
+                                    <Form.Control name="username" value={username} onChange={this._onChange} size="sm" disabled={pageType === 'update' ? true : false} />
+                                    <Form.Control.Feedback type="invalid">{errors.username}</Form.Control.Feedback>
+                                 </Col>
+                                 <Form.Label column sm={2}>Email</Form.Label>
+                                 <Col sm={5} className={errors.email ? 'has-danger' : ''}>
+                                    <Form.Control name="email" value={email} onChange={this._onChange} size="sm" disabled={pageType === 'update' ? true : false} />
+                                    <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
+                                 </Col>
+                              </Row>
                            </Col>
                         </Form.Group>
                         <Form.Group as={Row} className={errors.password ? 'has-danger' : ''}>
@@ -139,6 +155,7 @@ class Forms extends Component {
                               <Form.Control.Feedback type="invalid">{errors.country}</Form.Control.Feedback>
                            </Col>
                         </Form.Group>
+                        {pageType === 'update' ? <EditForms {...this.state} _updateState={e => this._updateState(e)} /> : null}
                         <Col sm={{ offset: 3, span: 9 }}>
                            <Button
                               variant="success"

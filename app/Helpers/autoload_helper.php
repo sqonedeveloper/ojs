@@ -29,3 +29,10 @@ function fullname($first, $last) {
 
    return $html;
 }
+
+function return_bytes($size_str) {
+   switch (substr ($size_str, -1)) {
+      case 'M': case 'm': return (int) $size_str * 1024;
+      default: return $size_str;
+   }
+}

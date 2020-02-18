@@ -74,6 +74,14 @@ $routes->setAutoRoute(false);
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index');
 
+$routes->get('login', 'Login::index');
+$routes->group('login', function($routes) {
+	$routes->get('logout', 'Login::logout');
+	$routes->post('submit', 'Login::submit');
+});
+
+$routes->post('checkPploadMaxFilesize', 'BaseController::checkPploadMaxFilesize');
+
 $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], function($routes) {
 	$routes->get('dashboard', 'Dashboard::index');
 
@@ -89,6 +97,12 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], function($rout
 			$routes->get('edit/(:num)', 'Account::edit/$1');
 			$routes->post('submit', 'Account::submit');
 			$routes->post('getData', 'Account::getData');
+			$routes->post('deleteAccount', 'Account::deleteAccount');
+		});
+
+		$routes->get('profile', 'Profile::index');
+		$routes->group('profile', function($routes) {
+			$routes->post('submit', 'Profile::submit');
 		});
 	});
 });

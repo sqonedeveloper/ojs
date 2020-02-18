@@ -85,6 +85,25 @@ class BaseController extends Controller {
 
 	public function notFound() {
       throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
-   }
+	}
+	
+	public function checkPploadMaxFilesize() {
+		$validation = [
+			'size' => 'required|numeric',
+			'name' => 'required'
+		];
+
+		$response = ['errors' => []];
+		if ($this->validate($validation)) {
+			$name = $this->request->getVar('name');
+			$file_size = (int) $this->request->getVar('size');
+			$upload_max_filesize = return_bytes(ini_get('upload_max_filesize'));
+
+			if ($file_size > $upload_max_filesize) {
+				$response['errors'][$name] = 'The file received by the server is '.return_bytes(ini_get('upload_max_filesize')).' KB';
+			}
+		}
+		return $this->response->setJSON($response);
+	}
 
 }

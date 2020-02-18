@@ -2,6 +2,11 @@ import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import { Container, Row, Col, Breadcrumb, Button, Table } from 'react-bootstrap'
 import { contextMenu } from '../../../Helpers'
+import axios from 'axios'
+import MsgResponse from '../../../MsgResponse'
+
+axios.defaults.baseURL = siteURL
+axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
 
 class Lists extends Component {
    constructor() {
@@ -44,6 +49,31 @@ class Lists extends Component {
       this.setState({ visible: !visible });
    }
 
+   _delete(id) {
+      this.setState({
+         status: true,
+         visible: false,
+         msg_response: 'Loading...'
+      })
+
+      var formData = new FormData()
+      formData.append('pageType', 'delete')
+      formData.append('id', id)
+      
+      axios.
+         post('/admin/users/account/deleteAccount', formData).
+         then(res => {
+            var response = res.data
+            this.setState({ ...response })
+            if (response.status) {
+               this.loadData.ajax.reload(null, false)
+            }
+         }).
+         catch(error => {
+            console.log('Error', error.message)
+         })
+   }
+
    render() {
       const {
          visible,
@@ -73,6 +103,7 @@ class Lists extends Component {
                </Row>
                <Row>
                   <Col md={12}>
+                     <MsgResponse {...this.state} />
                      <div className="card">
                         <Table striped bordered hover size="sm" id="datatable">
                            <thead>
@@ -91,7 +122,7 @@ class Lists extends Component {
             {visible ? <div ref={ref => { this.root = ref }} className="contextMenu">
                <div onClick={() => open(siteURL + '/admin/users/account/detail/' + id_users, '_parent')} className="contextMenu--option">Detail</div>
                <div onClick={() => open(siteURL + '/admin/users/account/edit/' + id_users, '_parent')} className="contextMenu--option">Edit</div>
-               <div onClick={() => open(siteURL + '/admin/users/account/' + id_users, '_parent')} className="contextMenu--option">Delete</div>
+               <div onClick={this._delete.bind(this, id_users)} className="contextMenu--option">Delete</div>
             </div> : null}
          </>
       )

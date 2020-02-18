@@ -39,8 +39,10 @@ class Account extends AdminController {
       $this->template($this->data);
    }
    
-   public function edit() {
+   public function edit($id) {
+      $model = new Model();
       $footerJs['listCountry'] = AdminController::dropdownCountry();
+      $footerJs['detail'] = $model->getDetailEdit($id);
 
       $this->data = [
          'title' => 'Edit Account',
@@ -63,10 +65,32 @@ class Account extends AdminController {
             $model->submit($post);
 
             $response['status'] = true;
-            $response['msg_response'] = 'Success.';
+            $response['msg_response'] = 'Data saved successfully.';
             $response['emptyPost'] = AdminController::emptyPost($post);
          } else {
             $response['msg_response'] = 'Recheck your input!';
+            $response['errors'] = \Config\Services::validation()->getErrors();
+         }
+         return $this->response->setJSON($response);
+      } else {
+         $this->notFound();
+      }
+   }
+
+   public function deleteAccount() {
+      if ($this->request->isAJAX()) {
+         $response = ['status' => false, 'errors' => [], 'msg_response' => ''];
+         $post = $this->request->getVar();
+         $validate = new Validate();
+      
+         if ($this->validate($validate->generated($post))) {
+            $model = new Model();
+            $model->deleteAccount($post);
+
+            $response['status'] = true;
+            $response['msg_response'] = 'Data successfully deleted.';
+         } else {
+            $response['msg_response'] = 'Something went wrong!';
             $response['errors'] = \Config\Services::validation()->getErrors();
          }
          return $this->response->setJSON($response);

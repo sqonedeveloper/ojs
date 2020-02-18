@@ -18,5 +18,22 @@ class Callback {
          return true;
       }
    }
+   
+   public function checkExistsUsername(string $str, &$error = null) : bool {
+      $db = \Config\Database::connect();
+
+      $table = $db->table('tb_users');
+      $table->where('username', $str);
+
+      $get = $table->get();
+      $data = $get->getRowArray();
+
+      if (isset($data)) {
+         return true;
+      } else {
+         $error = 'Incorrect username or password!';
+         return false;
+      }
+   }
 
 }
