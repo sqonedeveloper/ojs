@@ -81,13 +81,19 @@ $routes->group('login', function($routes) {
 });
 
 $routes->post('checkPploadMaxFilesize', 'BaseController::checkPploadMaxFilesize');
+$routes->post('uploadFileImage', 'BaseController::uploadFileImage');
+
+$routes->get('sitemap/(:any)', 'Sitemap::index/$1');
 
 $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], function($routes) {
 	$routes->get('dashboard', 'Dashboard::index');
 
 	$routes->get('journals', 'Journals::index');
 	$routes->group('journals', function($routes) {
+		$routes->get('wizard/(:num)/(:any)', 'Journals::wizard/$1/$2');
 		$routes->post('submit', 'Journals::submit');
+		$routes->post('submitWizard', 'Journals::submitWizard');
+		$routes->post('updateTable', 'Journals::updateTable');
 	});
 
 	$routes->group('users', ['namespace' => 'App\Controllers\Admin\Users'], function($routes) {

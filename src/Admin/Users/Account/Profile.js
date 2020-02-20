@@ -37,7 +37,7 @@ class Profile extends Component {
       this.setState({ [name]: value })
 
       if (type === 'file') {
-         this._checkPploadMaxFilesize(Math.round(this[name].files[0].size / 1024), name)
+         this._checkPploadMaxFilesize(this[name].files[0], name)
       }
    }
 
@@ -45,13 +45,12 @@ class Profile extends Component {
       this.setState({ [e]: value})
    }
 
-   _checkPploadMaxFilesize(file_size, name) {
+   _checkPploadMaxFilesize(file, name) {
       var formData = new FormData()
-      formData.append('size', file_size)
-      formData.append('name', name)
+      formData.append(name, file)
       
       axios.
-         post('checkPploadMaxFilesize', formData).
+         post('checkPploadMaxFilesize?name=' + name, formData).
          then(res => {
             var response = res.data
             this.setState({ ...response })
@@ -82,10 +81,13 @@ class Profile extends Component {
          post('/admin/users/profile/submit', formData).
          then(res => {
             var response = res.data
-            this.setState({
-               ...response,
-               avatar: checkImageUrl(baseURL + 'img/' + response.avatar)
-            })
+            this.setState({ ...response })
+
+            if (response.status) {
+               this.setState({
+                  avatar: checkImageUrl(baseURL + 'img/' + response.avatar)
+               })
+            }
          }).
          catch(error => {
             console.log('Error', error.message)

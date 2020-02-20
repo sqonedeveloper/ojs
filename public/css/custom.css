@@ -292,3 +292,34 @@ label.required::after {
 label {
    margin-bottom: unset !important;
 }
+
+.nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
+   color: #495057;
+   background-color: #eef5f9;
+   border-color: #dee2e6 #dee2e6 #eef5f9;
+}
+
+@media (min-width: 576px) {
+   .offset-sm-2 {
+      margin-left: 15.666667%;
+   }
+}
+
+.pkp_form_file_view {
+   margin-top: 5px;
+   padding: 20px;
+   background: #eee;
+}
+
+.pkp_form_file_view:before, .pkp_form_file_view:after {
+   content: " ";
+   display: table;
+}
+
+.pkp_form_image_view .img {
+   text-align: center;
+}
+
+.pkp_form_image_view .img img {
+   max-width: 100%;
+}

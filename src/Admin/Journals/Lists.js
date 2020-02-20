@@ -50,6 +50,10 @@ class Lists extends Component {
          then(res => {
             var response = res.data
             this.setState({ ...response })
+
+            if (response.status) {
+               open(siteURL + '/admin/journals/wizard/' + response.id_journal + '/masthead', '_parent')
+            }
          }).
          catch(error => {
             console.log('Error', error.message)

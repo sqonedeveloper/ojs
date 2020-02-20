@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Modal, Button, Form, Col, Row } from 'react-bootstrap'
+import { Editor } from '@tinymce/tinymce-react'
 
 export default class ModalJournal extends Component {
    constructor() {
@@ -19,6 +20,13 @@ export default class ModalJournal extends Component {
    _handleSubmitJournal() {
       this.props._updateState({
          name: 'createJournal'
+      })
+   }
+
+   _handleEditorChange(e, value) {
+      this.props._updateState({
+         name: e,
+         value: value
       })
    }
 
@@ -49,7 +57,25 @@ export default class ModalJournal extends Component {
                <Form.Group as={Row}>
                   <Form.Label column sm={2}>Journal summary</Form.Label>
                   <Col sm={10}>
-                     <Form.Control name="summary" value={summary} onChange={this._onChange} size="sm" />
+                     <Editor
+                        apiKey={'954fukvrtav9th5bw687mjdf4mr2zayp26tavmf30ahbobll'}
+                        initialValue={summary}
+                        init={{
+                           height: 200,
+                           menubar: false,
+
+                           plugins: [
+                              'advlist autolink lists link image charmap print preview anchor',
+                              'searchreplace visualblocks code fullscreen',
+                              'insertdatetime media table paste code help wordcount'
+                           ],
+                           toolbar:
+                              'undo redo | formatselect | bold italic backcolor | \
+                              alignleft aligncenter alignright alignjustify | \
+                              bullist numlist outdent indent | removeformat | help'
+                        }}
+                        onEditorChange={this._handleEditorChange.bind(this, 'summary')}
+                     />
                   </Col>
                </Form.Group>
                <Form.Group as={Row} className={errors.initial ? 'has-danger' : ''}>

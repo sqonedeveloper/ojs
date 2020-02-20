@@ -88,22 +88,68 @@ class BaseController extends Controller {
 	}
 	
 	public function checkPploadMaxFilesize() {
-		$validation = [
-			'size' => 'required|numeric',
-			'name' => 'required'
-		];
-
-		$response = ['errors' => []];
-		if ($this->validate($validation)) {
+		if ($this->request->isAJAX()) {
+			$response = ['msg_response' => ''];
 			$name = $this->request->getVar('name');
-			$file_size = (int) $this->request->getVar('size');
-			$upload_max_filesize = return_bytes(ini_get('upload_max_filesize'));
 
-			if ($file_size > $upload_max_filesize) {
-				$response['errors'][$name] = 'The file received by the server is '.return_bytes(ini_get('upload_max_filesize')).' KB';
+			$validation = [
+				$name => [
+					'rules' => 'max_size['.$name.',2048]',
+					'label' => ucwords($name)
+				]
+			];
+
+			if (!$this->validate($validation)) {
+				$response['msg_response'] = 'Recheck your input!';
+				$response['errors'] = \Config\Services::validation()->getErrors();
+				$response['status'] = false;
+			} else {
+				$response['status'] = true;
+				$response['errors'] = [];
 			}
+			return $this->response->setJSON($response);
+		} else {
+			$this->notFound();
 		}
-		return $this->response->setJSON($response);
+	}
+
+	public function uploadFileImage() {
+		if ($this->request->isAJAX()) {
+			$post = $this->request->getVar();
+
+			$validation = [
+				'upload_path' => 'required',
+				'key' => 'required|numeric',
+				'name' => 'required',
+				'file' => [
+					'rules' => 'uploaded[file]|max_size[file,2048]|mime_in[file,image/jpeg,image/pjpeg,image/png,image/x-png]',
+					'label' => ucwords($post['name'])
+				]
+			];
+
+			$response = ['status' => false, 'errors' => [], 'msg_response' => ''];
+			
+			if ($this->validate($validation)) {
+				$file = $this->request->getFile('file');
+				$setNewName = $file->getRandomName();
+				$file->move(ROOTPATH . $post['upload_path'], $setNewName);
+				@chmod(ROOTPATH . $post['upload_path'], 0777);
+				@chmod(ROOTPATH . $post['upload_path'] . '/' . $setNewName, 0777);
+
+				@unlink(ROOTPATH . $post['upload_path'] . '/' . $post['old_file']);
+
+				$response['status'] = true;
+				$response['file_name'] = $setNewName;
+			} else {
+				$response['msg_response'] = 'Recheck your input!';
+				$response['errors'][$post['name']] = \Config\Services::validation()->getErrors();
+			}
+			$response['key'] = (int) $post['key'] + 1;
+
+			return $this->response->setJSON($response);
+		} else {
+			$this->notFound();
+		}
 	}
 
 }
